@@ -216,17 +216,17 @@ Rcpp::IntegerVector resample_resid(Rcpp::NumericVector &particles, arma::vec &lo
   {
     if (arma::is_finite(log_wt(i)))
     {
-      int tW = (int)trunc(exp(log_wt(i) + log(n)));
+      int tW = (int)trunc(exp(log_wt(i) + log((double)n)));
       for (int j=0; j < tW; j++)
       {
         idx[r+j] = i;
       }
       r += tW;
-      log_wt(i) = log(exp(log_wt(i) + log(n)) - tW);
+      log_wt(i) = log(exp(log_wt(i) + log((double)n)) - tW);
     }
   }
   // renormalize the weights
-  log_wt = log_wt - log(n-r);
+  log_wt = log_wt - log((double)(n-r));
 
   // second loop uses multinomial resampling for the remaining n-r particles
   const Rcpp::NumericVector randU = Rcpp::runif(n-r);
@@ -293,7 +293,7 @@ unsigned rwmhParticles(Rcpp::NumericVector &particles, const arma::vec &log_wt,
       double prop = rwmh(particles[i], bw, prior);
       Rcpp::NumericVector pS = updatePseudo(prop, pseudo.ncol(), k, neigh, blocks, pathMx, sdMx, aux_sw);
       Rcpp::NumericVector oS = pseudo(i, Rcpp::_);
-      double log_ratio = log(surv(pS, stat, epsilon)) - log(surv(oS, stat, epsilon));
+      double log_ratio = log((double)surv(pS, stat, epsilon)) - log((double)surv(oS, stat, epsilon));
       // accept/reject
       if (unif_rand() < exp(log_ratio))
       {
@@ -423,7 +423,7 @@ SEXP smcPotts(SEXP yS, SEXP nS, SEXP bS, SEXP parS, SEXP prS)
   unsigned s_z = sum_ident(z, neigh, blocks);
   Rcpp::NumericVector particles = Rcpp::runif(nP, pr_beta[0], pr_beta[1]);
   arma::vec logWeights(nP);
-  logWeights.fill(-log(nP));
+  logWeights.fill(-log((double)nP));
   Rcpp::NumericMatrix pseudo = updatePseudo(particles, nM, k, neigh, blocks, pathMx, sdMx, aux_sw);
   
   arma::mat mu_save = arma::zeros(aux_iter, k); // history of simulated values of mu
@@ -487,7 +487,7 @@ SEXP smcPotts(SEXP yS, SEXP nS, SEXP bS, SEXP parS, SEXP prS)
       }
       particles = newP;
       pseudo = newM;
-      logWeights.fill(-log(nP));
+      logWeights.fill(-log((double)nP));
       ess.push_back(nP);
       time(&timer2);
       Rcpp::Rcout << "Took " << difftime(timer2,timer) << "sec to resample " << nP << " particles\n";
@@ -806,7 +806,7 @@ BEGIN_RCPP
   }
   particles = newP;
   pseudo = newM;
-  logWeights.fill(-log(nP));
+  logWeights.fill(-log((double)nP));
   time(&timer2);
   Rcpp::Rcout << "Took " << difftime(timer2,timer) << "sec to resample " << nP << " particles\n";
     
@@ -841,7 +841,7 @@ BEGIN_RCPP
     blocks.push_back(ublock);
   }
 
-  unsigned niter = (unsigned)pow(k, n);
+  unsigned niter = (unsigned)pow((double)k, (double)n);
   arma::umat z = randomIndices(n, k);
   arma::vec exp_save = arma::zeros(beta.size());
   arma::vec esq_save = arma::zeros(beta.size());

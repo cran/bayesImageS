@@ -4,7 +4,7 @@
 \alias{mcmcPottsNoData}
 \title{Simulate pixel labels using chequerboard Gibbs sampling.}
 \usage{
-mcmcPottsNoData(beta, k, neighbors, blocks, niter = 1000)
+mcmcPottsNoData(beta, k, neighbors, blocks, niter = 1000, random = TRUE)
 }
 \arguments{
 \item{beta}{The inverse temperature parameter of the Potts model.}
@@ -16,6 +16,8 @@ mcmcPottsNoData(beta, k, neighbors, blocks, niter = 1000)
 \item{blocks}{A list of pixel indices, dividing the lattice into independent blocks.}
 
 \item{niter}{The number of iterations of the algorithm to perform.}
+
+\item{random}{Whether to initialize the labels using random or deterministic starting values.}
 }
 \value{
 A list containing the following elements:

@@ -5,9 +5,9 @@
 
 RcppExport SEXP mcmcPotts(SEXP y, SEXP neighbors, SEXP blocks, SEXP slices, SEXP niter, SEXP nburn, SEXP priors, SEXP mh, SEXP truth);
 
-RcppExport SEXP mcmcPottsNoData(SEXP beta, SEXP k, SEXP neighbors, SEXP blocks, SEXP niter);
+RcppExport SEXP mcmcPottsNoData(SEXP beta, SEXP k, SEXP neighbors, SEXP blocks, SEXP niter, SEXP random);
 
-RcppExport SEXP swNoData(SEXP beta, SEXP k, SEXP neighbors, SEXP blocks, SEXP slices, SEXP niter);
+RcppExport SEXP swNoData(SEXP beta, SEXP k, SEXP neighbors, SEXP blocks, SEXP slices, SEXP niter, SEXP random);
 
 RcppExport SEXP gibbsGMM(SEXP y, SEXP niter, SEXP nburn, SEXP priors);
 

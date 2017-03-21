@@ -1,3 +1,6 @@
-exportPattern("^[[:alpha:]]+")
-importFrom(Rcpp,evalCpp)
 useDynLib(bayesImageS)
+
+export(mcmcPotts, mcmcPottsNoData, swNoData, gibbsGMM, gibbsNorm, sufficientStat,
+       smcPotts, initSedki, testResample, exactPotts, getEdges, getNeighbors, getBlocks)
+
+importFrom(Rcpp,sourceCpp)

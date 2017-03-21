@@ -23,6 +23,7 @@ mcmcPotts <- function(y, neighbors, blocks, slices, niter=55000, nburn=5000, pri
 #' @param neighbors A matrix of all neighbors in the lattice, one row per pixel.
 #' @param blocks A list of pixel indices, dividing the lattice into independent blocks.
 #' @param niter The number of iterations of the algorithm to perform.
+#' @param random Whether to initialize the labels using random or deterministic starting values.
 #' @return A list containing the following elements:
 #' \describe{
 #'   \item{\code{alloc}}{An n by k matrix containing the number of times that pixel i was allocated to label j.}
@@ -37,8 +38,8 @@ mcmcPotts <- function(y, neighbors, blocks, slices, niter=55000, nburn=5000, pri
 #' res.Gibbs <- mcmcPottsNoData(0.7, 3, neigh, blocks, niter=200)
 #' res.Gibbs$z
 #' res.Gibbs$sum[200]
-mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000) {
-  result <- .Call( "mcmcPottsNoData", beta, k, neighbors, blocks, niter, PACKAGE = "bayesImageS")  
+mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE) {
+  result <- .Call( "mcmcPottsNoData", beta, k, neighbors, blocks, niter, random, PACKAGE = "bayesImageS")  
 }
 
 #' Simulate pixel labels using the Swendsen-Wang algorithm.
@@ -54,6 +55,7 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000) {
 #' @param blocks A list of pixel indices, dividing the lattice into independent blocks.
 #' @param slices Deprecated.
 #' @param niter The number of iterations of the algorithm to perform.
+#' @param random Whether to initialize the labels using random or deterministic starting values.
 #' @return A list containing the following elements:
 #' \describe{
 #'   \item{\code{alloc}}{An n by k matrix containing the number of times that pixel i was allocated to label j.}
@@ -69,8 +71,8 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000) {
 #' res.sw <- swNoData(0.7, 3, neigh, blocks, niter=200)
 #' res.sw$z
 #' res.sw$sum[200]
-swNoData <- function(beta, k, neighbors, blocks, slices=c(0,nrow(neighbors)), niter=1000) {
-  result <- .Call( "swNoData", beta, k, neighbors, blocks, slices, niter, PACKAGE = "bayesImageS")  
+swNoData <- function(beta, k, neighbors, blocks, slices=c(0,nrow(neighbors)), niter=1000, random=TRUE) {
+  result <- .Call( "swNoData", beta, k, neighbors, blocks, slices, niter, random, PACKAGE = "bayesImageS")  
 }
 
 #' Fit a mixture of Gaussians to the observed data.

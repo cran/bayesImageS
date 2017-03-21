@@ -232,7 +232,7 @@ unsigned accelABC(const arma::umat & neigh, const std::vector<arma::uvec> & bloc
   return 0;
 }
 
-const double calcApproxVar(const double beta, const double bcrit, const double v0, const double vmax,
+double calcApproxVar(const double beta, const double bcrit, const double v0, const double vmax,
                            const double phi1, const double phi2)
 {
   if (beta <= bcrit)
@@ -245,7 +245,7 @@ const double calcApproxVar(const double beta, const double bcrit, const double v
   }
 }
 
-const double calcApproxExp(const double beta, const double bcrit, const double v0, const double vmax,
+double calcApproxExp(const double beta, const double bcrit, const double v0, const double vmax,
                            const double phi1, const double phi2, const double e0, const double ecrit)
 {
   if (beta <= bcrit)
@@ -773,16 +773,18 @@ BEGIN_RCPP
 END_RCPP
 }
 
-SEXP mcmcPottsNoData(SEXP betaS, SEXP kS, SEXP nS, SEXP bS, SEXP itS) {
+SEXP mcmcPottsNoData(SEXP betaS, SEXP kS, SEXP nS, SEXP bS, SEXP itS, SEXP randS) {
 BEGIN_RCPP
   Rcpp::IntegerMatrix nR(nS);       // creates Rcpp matrix from SEXP
   Rcpp::List bR(bS);
   unsigned niter = Rcpp::as<unsigned>(itS);
   int k = Rcpp::as<int>(kS);
   double beta = Rcpp::as<double>(betaS);
+  bool randInit = Rcpp::as<bool>(randS);
   
   // no easy conversion from IntegerMatrix to umat
   arma::umat neigh = unsignMx(nR) - 1;
+  unsigned n = neigh.n_rows;
 
   // block index vectors are not symmetric
   std::vector<arma::uvec> blocks;
@@ -795,7 +797,19 @@ BEGIN_RCPP
   }
 
   Rcpp::RNGScope scope;               // initialize random number generator
-  arma::umat z = randomIndices(neigh.n_rows, k);
+  arma::umat z = arma::zeros<arma::umat>(n+1,k);
+  if (randInit)
+  {
+    z = randomIndices(n, k);
+  }
+  else
+  {
+    unsigned j = 0;
+    for (unsigned i=0; i<n; i++)
+    {
+      z(i,j) = 1;
+    }
+  }
   arma::umat alloc  = arma::zeros<arma::umat>(neigh.n_rows, k);
   arma::vec sum_save = arma::zeros(niter);
 
@@ -813,7 +827,7 @@ BEGIN_RCPP
 END_RCPP
 }
 
-SEXP swNoData(SEXP betaS, SEXP kS, SEXP nS, SEXP bS, SEXP sS, SEXP itS) {
+SEXP swNoData(SEXP betaS, SEXP kS, SEXP nS, SEXP bS, SEXP sS, SEXP itS, SEXP randS) {
 BEGIN_RCPP
   Rcpp::IntegerMatrix nR(nS);       // creates Rcpp matrix from SEXP
   Rcpp::IntegerVector sR(sS);       // creates Rcpp vector from SEXP
@@ -821,8 +835,10 @@ BEGIN_RCPP
   unsigned niter = Rcpp::as<unsigned>(itS);
   int k = Rcpp::as<int>(kS);
   double beta = Rcpp::as<double>(betaS);
+  bool randInit = Rcpp::as<bool>(randS);
 
   arma::umat neigh = unsignMx(nR) - 1;
+  unsigned n = neigh.n_rows;
   arma::uvec slice = unsign(sR);
   // block index vectors are not symmetric
   std::vector<arma::uvec> blocks;
@@ -835,7 +851,19 @@ BEGIN_RCPP
   }
   
   Rcpp::RNGScope scope;               // initialize random number generator
-  arma::umat z = randomIndices(neigh.n_rows, k);
+  arma::umat z = arma::zeros<arma::umat>(n+1,k);
+  if (randInit)
+  {
+    z = randomIndices(n, k);
+  }
+  else
+  {
+    unsigned j = 0;
+    for (unsigned i=0; i<n; i++)
+    {
+      z(i,j) = 1;
+    }
+  }
   arma::umat alloc  = arma::zeros<arma::umat>(neigh.n_rows, k);
   arma::vec sum_save = arma::zeros(niter);
 

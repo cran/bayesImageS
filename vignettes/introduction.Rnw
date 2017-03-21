@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Scalable Bayesian inference for the inverse temperature of a hidden Potts model}
+%\VignetteIndexEntry{Bayesian Methods for Image Segmentation}
 %\VignetteEngine{knitr::knitr}
 %\VignetteKeyword{Approximate Bayesian Computation}
 %\VignetteKeyword{Composite likelihood}

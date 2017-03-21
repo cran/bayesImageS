@@ -5,7 +5,7 @@
 \title{Simulate pixel labels using the Swendsen-Wang algorithm.}
 \usage{
 swNoData(beta, k, neighbors, blocks, slices = c(0, nrow(neighbors)),
-  niter = 1000)
+  niter = 1000, random = TRUE)
 }
 \arguments{
 \item{beta}{The inverse temperature parameter of the Potts model.}
@@ -19,6 +19,8 @@ swNoData(beta, k, neighbors, blocks, slices = c(0, nrow(neighbors)),
 \item{slices}{Deprecated.}
 
 \item{niter}{The number of iterations of the algorithm to perform.}
+
+\item{random}{Whether to initialize the labels using random or deterministic starting values.}
 }
 \value{
 A list containing the following elements:
