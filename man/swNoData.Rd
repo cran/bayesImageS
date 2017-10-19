@@ -4,8 +4,7 @@
 \alias{swNoData}
 \title{Simulate pixel labels using the Swendsen-Wang algorithm.}
 \usage{
-swNoData(beta, k, neighbors, blocks, slices = c(0, nrow(neighbors)),
-  niter = 1000, random = TRUE)
+swNoData(beta, k, neighbors, blocks, niter = 1000, random = TRUE)
 }
 \arguments{
 \item{beta}{The inverse temperature parameter of the Potts model.}
@@ -15,8 +14,6 @@ swNoData(beta, k, neighbors, blocks, slices = c(0, nrow(neighbors)),
 \item{neighbors}{A matrix of all neighbors in the lattice, one row per pixel.}
 
 \item{blocks}{A list of pixel indices, dividing the lattice into independent blocks.}
-
-\item{slices}{Deprecated.}
 
 \item{niter}{The number of iterations of the algorithm to perform.}
 
@@ -45,9 +42,8 @@ res.sw$z
 res.sw$sum[200]
 }
 \references{
-Swendsen, R. H. and Wang, J.-S. 1987 "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{http://dx.doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
+Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{https://doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
 }
 \seealso{
 \code{\link[PottsUtils]{SW}}
 }
-

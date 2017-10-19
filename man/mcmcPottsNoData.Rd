@@ -41,4 +41,3 @@ res.Gibbs$sum[200]
 \seealso{
 \code{\link[PottsUtils]{BlocksGibbs}}
 }
-

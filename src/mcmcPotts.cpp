@@ -2,11 +2,11 @@
 // This file is part of the R package bayesImageS. It contains
 // implementations of Metropolis-Hastings algorithms for image
 // segmentation using a hidden Potts model.
-// Copyright (C) 2013-2016  Matthew Moores
+// Copyright (C) 2013-2017  Matthew Moores
 //
 // bayesImageS is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
+// the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 //
 // bayesImageS is distributed in the hope that it will be useful,
@@ -23,7 +23,7 @@
 // updates inverse temperature using approximate exchange algorithm
 // Lionel Cucala, J-M Marin, C. P. Robert & D. M. Titterington (2009)
 unsigned exchangeBeta(const arma::umat & neigh, const std::vector<arma::uvec> & blocks,
-                      const arma::uvec & slice, const arma::umat & z, double & beta,
+                      const arma::umat & z, double & beta,
                       const double prior_beta[2], const unsigned aux, const bool useSW, const bool swapAux, const double bw)
 {
   // random walk proposal for B' ~ N(B, 0.01^2)
@@ -114,7 +114,7 @@ unsigned accelExchange(const arma::umat & neigh, const std::vector<arma::uvec> &
 // updates inverse temperature using approximate Bayesian computation (ABC)
 // A Grelaud, C P Robert, J-M Marin, F Rodolphe & J-F Taly (2009)
 unsigned abcBeta(const arma::umat & neigh, const std::vector<arma::uvec> & blocks,
-                 const arma::uvec & slice, const arma::umat & z, double & beta, const double prior_beta[2],
+                 const arma::umat & z, double & beta, const double prior_beta[2],
                  const unsigned aux, const bool useSW, const bool swapAux, const double bw, const double epsilon)
 {
   // random walk proposal for B' ~ N(B, 0.01^2)
@@ -367,7 +367,7 @@ unsigned Dice(arma::umat labels, arma::umat truth)
   return arma::accu(intersection);
 }
 
-SEXP mcmcPotts(SEXP yS, SEXP nS, SEXP bS, SEXP sS, SEXP itS, SEXP biS, SEXP prS, SEXP mhS, SEXP truthS)
+SEXP mcmcPotts(SEXP yS, SEXP nS, SEXP bS, SEXP itS, SEXP biS, SEXP prS, SEXP mhS, SEXP truthS)
 {
 BEGIN_RCPP
   Rcpp::NumericVector yR(yS);       // creates Rcpp vector from SEXP
@@ -387,15 +387,12 @@ BEGIN_RCPP
   }
   unsigned aux = 0;
   bool aux_sw = true, aux_swap=false;
-  arma::uvec slice;
   if (mhR.containsElementNamed("auxiliary"))
   {
     aux = Rcpp::as<unsigned>(mhR["auxiliary"]);
   }
   if (exchange || abc)
   {
-    Rcpp::IntegerVector sR(sS);
-    slice = unsign(sR);
     if (mhR.containsElementNamed("aux_alg"))
     {
       std::string aux_alg = Rcpp::as<std::string>(mhR["aux_alg"]);
@@ -540,6 +537,8 @@ BEGIN_RCPP
   for (unsigned it=0; it<niter; it++){
     // reset labels after burn-in
     if (it == nburn) alloc.zeros();
+    // check for interrupt every thousand iterations
+    if (it % 1000 == 0) Rcpp::checkUserInterrupt();
 
     // update labels
     arma::mat alpha = dnorm(yunique, ymatch, mu, sd);
@@ -582,7 +581,7 @@ BEGIN_RCPP
         {
           if (aux > 0)
           {
-            accept += abcBeta(neigh, blocks, slice, z, beta, pr_beta, aux, aux_sw, aux_swap, bw, epsilon);
+            accept += abcBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw, epsilon);
           }
           else
           {
@@ -594,7 +593,7 @@ BEGIN_RCPP
         {
           if (aux > 0)
           {
-            accept += exchangeBeta(neigh, blocks, slice, z, beta, pr_beta, aux, aux_sw, aux_swap, bw);
+            accept += exchangeBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw);
           }
           else
           {
@@ -827,10 +826,9 @@ BEGIN_RCPP
 END_RCPP
 }
 
-SEXP swNoData(SEXP betaS, SEXP kS, SEXP nS, SEXP bS, SEXP sS, SEXP itS, SEXP randS) {
+SEXP swNoData(SEXP betaS, SEXP kS, SEXP nS, SEXP bS, SEXP itS, SEXP randS) {
 BEGIN_RCPP
   Rcpp::IntegerMatrix nR(nS);       // creates Rcpp matrix from SEXP
-  Rcpp::IntegerVector sR(sS);       // creates Rcpp vector from SEXP
   Rcpp::List bR(bS);
   unsigned niter = Rcpp::as<unsigned>(itS);
   int k = Rcpp::as<int>(kS);
@@ -839,7 +837,6 @@ BEGIN_RCPP
 
   arma::umat neigh = unsignMx(nR) - 1;
   unsigned n = neigh.n_rows;
-  arma::uvec slice = unsign(sR);
   // block index vectors are not symmetric
   std::vector<arma::uvec> blocks;
   blocks.reserve(bR.length());
@@ -877,8 +874,7 @@ BEGIN_RCPP
       Rcpp::Named("alloc") = alloc,    // count of allocations to each component
       Rcpp::Named("z")     = z,        // final sample from Gibbs distribution
       Rcpp::Named("sum") = sum_save,    // sum of identical neighbours
-      Rcpp::Named("neigh") = neigh,
-      Rcpp::Named("sliceBounds") = slice
+      Rcpp::Named("neigh") = neigh
   );
 END_RCPP
 }

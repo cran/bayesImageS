@@ -21,4 +21,3 @@ A matrix containing MCMC samples for the parameters of the mixture model.
 \description{
 Fit a mixture of Gaussians to the observed data.
 }
-

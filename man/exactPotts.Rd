@@ -7,7 +7,7 @@
 exactPotts(neighbors, blocks, k, beta)
 }
 \arguments{
-\item{neighbors}{A matrix of all neighbors in the lattice, one row per pixel.}
+\item{neighbors}{A matrix of all neighbours in the lattice, one row per pixel.}
 
 \item{blocks}{A list of pixel indices, dividing the lattice into independent blocks.}
 
@@ -28,4 +28,3 @@ A list containing the following elements:
 \bold{Warning}: this algorithm is O\eqn{(k^n)} and therefore will not scale for
 \eqn{k^n > 2^{31} - 1}
 }
-

@@ -4,9 +4,9 @@
 #include "PottsUtil.h"
 
 static const R_CallMethodDef callEntries[]  = {
-  {"mcmcPotts", (DL_FUNC) &mcmcPotts, 9},
+  {"mcmcPotts", (DL_FUNC) &mcmcPotts, 8},
   {"mcmcPottsNoData", (DL_FUNC) &mcmcPottsNoData, 6},
-  {"swNoData", (DL_FUNC) &swNoData, 7},
+  {"swNoData", (DL_FUNC) &swNoData, 6},
   {"gibbsGMM", (DL_FUNC) &gibbsGMM, 4},
   {"gibbsNorm", (DL_FUNC) &gibbsNorm, 3},
   {"sufficientStat", (DL_FUNC) &sufficientStat, 4},

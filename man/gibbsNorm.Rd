@@ -25,4 +25,3 @@ res.norm <- gibbsNorm(y, priors=list(mu=0, mu.sd=1e6, sigma=1e-3, sigma.nu=1e-3)
 summary(res.norm$mu[501:1000])
 summary(res.norm$sigma[501:1000])
 }
-

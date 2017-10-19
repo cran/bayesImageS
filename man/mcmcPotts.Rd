@@ -4,8 +4,7 @@
 \alias{mcmcPotts}
 \title{Fit the hidden Potts model using a Markov chain Monte Carlo algorithm.}
 \usage{
-mcmcPotts(y, neighbors, blocks, slices, niter = 55000, nburn = 5000,
-  priors = NULL, mh = list(algorithm = "pseudolikelihood", bandwidth = 0.2),
+mcmcPotts(y, neighbors, blocks, priors, mh, niter = 55000, nburn = 5000,
   truth = NULL)
 }
 \arguments{
@@ -15,15 +14,13 @@ mcmcPotts(y, neighbors, blocks, slices, niter = 55000, nburn = 5000,
 
 \item{blocks}{A list of pixel indices, dividing the lattice into independent blocks.}
 
-\item{slices}{Deprecated.}
+\item{priors}{A list of priors for the parameters of the model.}
+
+\item{mh}{A list of options for the Metropolis-Hastings algorithm.}
 
 \item{niter}{The number of iterations of the algorithm to perform.}
 
 \item{nburn}{The number of iterations to discard as burn-in.}
-
-\item{priors}{A list of priors for the parameters of the model.}
-
-\item{mh}{A list of options for the Metropolis-Hastings algorithm.}
 
 \item{truth}{A matrix containing the ground truth for the pixel labels.}
 }
@@ -36,4 +33,3 @@ Fit the hidden Potts model using a Markov chain Monte Carlo algorithm.
 \seealso{
 \code{\link[mritc]{mritc.bayes}}
 }
-

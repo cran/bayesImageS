@@ -2,11 +2,11 @@
 // This file is part of the R package bayesImageS. It contains sequential
 // Monte Carlo algorithms for image segmentation using a hidden Potts
 // model with approximate Bayesian computation (SMC-ABC).
-// Copyright (C) 2013-2015  Matthew Moores
+// Copyright (C) 2013-2017  Matthew Moores
 //
 // bayesImageS is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
+// the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 //
 // bayesImageS is distributed in the hope that it will be useful,
@@ -450,6 +450,7 @@ SEXP smcPotts(SEXP yS, SEXP nS, SEXP bS, SEXP parS, SEXP prS)
   {
     it++;
     Rcpp::Rcout << "Iteration " << it << "\n";
+    Rcpp::checkUserInterrupt();
     // adaptively select epsilon and update importance weights    
     time(&timer);
     if (epsilon.size() == 0)
@@ -883,6 +884,8 @@ BEGIN_RCPP
       pl_exp(b) += exp(log_pl + log(sum_save(it)));
       pl_var(b) += exp(log_pl + 2*log(sum_save(it)));
     }
+    // check for interrupt every thousand iterations
+    if (it % 1000 == 0) Rcpp::checkUserInterrupt();
   }
 
   // now calculate the expectation and the variance

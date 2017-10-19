@@ -21,4 +21,3 @@ The sum of like neighbors.
 \description{
 Calculate the sufficient statistic of the Potts model for the given labels.
 }
-

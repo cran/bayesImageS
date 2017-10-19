@@ -24,4 +24,3 @@ A matrix containing SMC samples for the parameters of the Potts model.
 \description{
 Fit the hidden Potts model using approximate Bayesian computation with sequential Monte Carlo (ABC-SMC).
 }
-

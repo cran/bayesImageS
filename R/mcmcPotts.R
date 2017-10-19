@@ -3,17 +3,15 @@
 #' @param y A vector of observed pixel data.
 #' @param neighbors A matrix of all neighbors in the lattice, one row per pixel.
 #' @param blocks A list of pixel indices, dividing the lattice into independent blocks.
-#' @param slices Deprecated.
-#' @param niter The number of iterations of the algorithm to perform.
-#' @param nburn The number of iterations to discard as burn-in.
 #' @param priors A list of priors for the parameters of the model.
 #' @param mh A list of options for the Metropolis-Hastings algorithm.
+#' @param niter The number of iterations of the algorithm to perform.
+#' @param nburn The number of iterations to discard as burn-in.
 #' @param truth A matrix containing the ground truth for the pixel labels.
 #' @return A matrix containing MCMC samples for the parameters of the Potts model.
 #' @seealso \code{\link[mritc]{mritc.bayes}}
-mcmcPotts <- function(y, neighbors, blocks, slices, niter=55000, nburn=5000, priors=NULL,
-                      mh=list(algorithm="pseudolikelihood",bandwidth=0.2), truth=NULL) {
-  result <- .Call( "mcmcPotts", y, neighbors, blocks, slices, niter, nburn, priors, mh, truth, PACKAGE = "bayesImageS")
+mcmcPotts <- function(y, neighbors, blocks, priors, mh, niter=55000, nburn=5000, truth=NULL) {
+  result <- .Call( "mcmcPotts", y, neighbors, blocks, niter, nburn, priors, mh, truth, PACKAGE = "bayesImageS")
 }
 
 #' Simulate pixel labels using chequerboard Gibbs sampling.
@@ -53,7 +51,6 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE)
 #' @param k The number of unique labels.
 #' @param neighbors A matrix of all neighbors in the lattice, one row per pixel.
 #' @param blocks A list of pixel indices, dividing the lattice into independent blocks.
-#' @param slices Deprecated.
 #' @param niter The number of iterations of the algorithm to perform.
 #' @param random Whether to initialize the labels using random or deterministic starting values.
 #' @return A list containing the following elements:
@@ -63,7 +60,7 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE)
 #'   \item{\code{sum}}{An \code{niter} by 1 matrix containing the sum of like neighbors, i.e. the sufficient statistic of the Potts model, at each iteration.}
 #'   }
 #' @seealso \code{\link[PottsUtils]{SW}}
-#' @references Swendsen, R. H. and Wang, J.-S. 1987 "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{http://dx.doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
+#' @references Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{https://doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
 #' @examples
 #' # Swendsen-Wang for a 2x2 lattice
 #' neigh <- matrix(c(5,2,5,3,  1,5,5,4,  5,4,1,5,  3,5,2,5), nrow=4, ncol=4, byrow=TRUE)
@@ -71,8 +68,8 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE)
 #' res.sw <- swNoData(0.7, 3, neigh, blocks, niter=200)
 #' res.sw$z
 #' res.sw$sum[200]
-swNoData <- function(beta, k, neighbors, blocks, slices=c(0,nrow(neighbors)), niter=1000, random=TRUE) {
-  result <- .Call( "swNoData", beta, k, neighbors, blocks, slices, niter, random, PACKAGE = "bayesImageS")  
+swNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE) {
+  result <- .Call( "swNoData", beta, k, neighbors, blocks, niter, random, PACKAGE = "bayesImageS")  
 }
 
 #' Fit a mixture of Gaussians to the observed data.
