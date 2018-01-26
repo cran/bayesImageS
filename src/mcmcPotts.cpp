@@ -232,48 +232,48 @@ unsigned accelABC(const arma::umat & neigh, const std::vector<arma::uvec> & bloc
   return 0;
 }
 
-double calcApproxVar(const double beta, const double bcrit, const double v0, const double vmax,
-                           const double phi1, const double phi2)
+double calcApproxVar(const double beta, const double bcrit, const double v0, const double vmax1,
+                     const double vmax2, const double phi1, const double phi2)
 {
   if (beta <= bcrit)
   {
-    return v0 + (vmax - v0)*exp(-phi1*sqrt(bcrit - beta));
+    return v0 + (vmax1 - v0)*exp(-phi1*sqrt(bcrit - beta));
   }
   else
   {
-    return vmax*exp(-phi2*sqrt(beta - bcrit));
+    return vmax2*exp(-phi2*sqrt(beta - bcrit));
   }
 }
 
-double calcApproxExp(const double beta, const double bcrit, const double v0, const double vmax,
-                           const double phi1, const double phi2, const double e0, const double ecrit)
+double calcApproxExp(const double beta, const double bcrit, const double v0, const double vmax1,
+                     const double vmax2, const double phi1, const double phi2, const double e0, const double ecrit)
 {
   if (beta <= bcrit)
   {
     double sqrtBcritPhi = sqrt(bcrit)*phi1;
     double sqrtBdiffPhi = sqrt(bcrit - beta)*phi1;
-    return e0 + beta*v0 - ((2*(vmax-v0))/pow(phi1,2.0))*((sqrtBcritPhi + 1)/exp(sqrtBcritPhi) - (sqrtBdiffPhi + 1)/exp(sqrtBdiffPhi));
+    return e0 + beta*v0 - ((2*(vmax1-v0))/pow(phi1,2.0))*((sqrtBcritPhi + 1)/exp(sqrtBcritPhi) - (sqrtBdiffPhi + 1)/exp(sqrtBdiffPhi));
   }
   else
   {
     double sqrtBdiff = sqrt(beta - bcrit);
-    return ecrit - ((2*vmax)/phi2)*(sqrtBdiff/exp(phi2*sqrtBdiff) + (exp(-phi2*sqrtBdiff) - 1)/phi2);
+    return ecrit - ((2*vmax2)/phi2)*(sqrtBdiff/exp(phi2*sqrtBdiff) + (exp(-phi2*sqrtBdiff) - 1)/phi2);
   }
 }
 
 unsigned accelAuxModel(const arma::umat & neigh, const std::vector<arma::uvec> & blocks,
               const arma::umat & z, double & beta, const double prior_beta[2], const double bw,
               const double bcrit, const double ecrit, const double e0, const double v0,
-              const double vmax, const double phi1, const double phi2)
+              const double vmax1, const double vmax2, const double phi1, const double phi2, const double sdMult)
 {
   // random walk proposal for B' ~ N(B, 0.01^2)
   double bprime = rwmh(beta, bw, prior_beta);
 
   // approximate E[S(z)|beta] & V[S(z)|beta] using binding functions
-  double exp_b0 = calcApproxExp(beta, bcrit, v0, vmax, phi1, phi2, e0, ecrit);
-  double exp_b1 = calcApproxExp(bprime, bcrit, v0, vmax, phi1, phi2, e0, ecrit);
-  double sd_b0 = sqrt(calcApproxVar(beta, bcrit, v0, vmax, phi1, phi2));
-  double sd_b1 = sqrt(calcApproxVar(bprime, bcrit, v0, vmax, phi1, phi2));
+  double exp_b0 = calcApproxExp(beta, bcrit, v0, vmax1, vmax2, phi1, phi2, e0, ecrit);
+  double exp_b1 = calcApproxExp(bprime, bcrit, v0, vmax1, vmax2, phi1, phi2, e0, ecrit);
+  double sd_b0 = sdMult*sqrt(calcApproxVar(beta, bcrit, v0, vmax1, vmax2, phi1, phi2));
+  double sd_b1 = sdMult*sqrt(calcApproxVar(bprime, bcrit, v0, vmax1, vmax2, phi1, phi2));
 
   // accept/reject using parametric auxiliary model
   double sum_z = sum_ident(z, neigh, blocks);
@@ -385,6 +385,11 @@ BEGIN_RCPP
   {
     throw std::invalid_argument("algorithm not supported");
   }
+  bool sortMeans = false;
+  if (mhR.containsElementNamed("sort"))
+  {
+    sortMeans = Rcpp::as<bool>(mhR["sort"]);
+  }
   unsigned aux = 0;
   bool aux_sw = true, aux_swap=false;
   if (mhR.containsElementNamed("auxiliary"))
@@ -404,16 +409,18 @@ BEGIN_RCPP
       Rcpp::Rcout << "Swapping auxiliary variable: " << aux_swap << "\n";
     }
   }
-  double bcrit=0, ecrit=0, e0=0, v0=0, vmax=0, phi1=0, phi2=0;
+  double bcrit=0, ecrit=0, e0=0, v0=0, vmax1=0, vmax2=0, phi1=0, phi2=0, sdMult=1;
   if (auxMod)
   {
     bcrit = Rcpp::as<double>(mhR["bcrit"]);
     e0 = Rcpp::as<double>(mhR["E0"]);
     v0 = Rcpp::as<double>(mhR["V0"]);
-    vmax = Rcpp::as<double>(mhR["Vmax"]);
+    vmax1 = Rcpp::as<double>(mhR["Vmax1"]);
+    vmax2 = Rcpp::as<double>(mhR["Vmax2"]);
     phi1 = Rcpp::as<double>(mhR["phi1"]);
     phi2 = Rcpp::as<double>(mhR["phi2"]);
-    ecrit = calcApproxExp(bcrit, bcrit, v0, vmax, phi1, phi2, e0, 0.0);
+    ecrit = Rcpp::as<double>(mhR["Ecrit"]);
+    sdMult = Rcpp::as<double>(mhR["factor"]);
   }
   arma::mat pathMx, sdMx;
   if (mhR.containsElementNamed("path"))
@@ -550,7 +557,7 @@ BEGIN_RCPP
 
     // update means
     mu = gibbsMeans(nZ, sumY, pr_mu, pr_mu_tau, sd);
-    if (mu.n_elem == 9) mu[8] = arma::max(mu);
+    if (sortMeans) mu = arma::sort(mu);
     mu_save.row(it) = mu;
     
     // update standard deviations
@@ -558,60 +565,57 @@ BEGIN_RCPP
     sd_save.row(it) = sd;
     
     // update inverse temperature
-    if (it > aux)
+    if (path)
     {
-      if (path)
+      accept += pathBeta(neigh, blocks, pathMx, z, beta, pr_beta, bw);
+    }
+    else if (auxMod)
+    {
+      accept += accelAuxModel(neigh, blocks, z, beta, pr_beta, bw,
+                              bcrit, ecrit, e0, v0, vmax1, vmax2, phi1, phi2, sdMult);
+    }
+    else
+    {
+      // slow algorithm, so print progress at each iteration
+      Rcpp::Rcout << it << "of" << niter << "(bw " << bw << ")\t";
+      if (pseudo)
       {
-        accept += pathBeta(neigh, blocks, pathMx, z, beta, pr_beta, bw);
+        accept += pseudoBeta(neigh, blocks, z, beta, pr_beta, bw);
       }
-      else if (auxMod)
+      else if (abc)
       {
-        accept += accelAuxModel(neigh, blocks, z, beta, pr_beta, bw,
-                                bcrit, ecrit, e0, v0, vmax, phi1, phi2);
-      }
-      else
-      {
-        // slow algorithm, so print progress at each iteration
-        Rcpp::Rcout << it << "of" << niter << "(bw " << bw << ")\t";
-        if (pseudo)
+        if (aux > 0)
         {
-          accept += pseudoBeta(neigh, blocks, z, beta, pr_beta, bw);
-        }
-        else if (abc)
-        {
-          if (aux > 0)
-          {
-            accept += abcBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw, epsilon);
-          }
-          else
-          {
-            //accept += accelABC(neigh, blocks, pathMx, sdMx, z, beta, pr_beta, epsilon);
-            accept += accelABC_MCMC(neigh, blocks, pathMx, sdMx, z, beta, pr_beta, epsilon, accept);
-          }
+          accept += abcBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw, epsilon);
         }
         else
         {
-          if (aux > 0)
-          {
-            accept += exchangeBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw);
-          }
-          else
-          {
-            accept += accelExchange(neigh, blocks, pathMx, sdMx, z, beta, pr_beta, accept);
-          }
+          //accept += accelABC(neigh, blocks, pathMx, sdMx, z, beta, pr_beta, epsilon);
+          accept += accelABC_MCMC(neigh, blocks, pathMx, sdMx, z, beta, pr_beta, epsilon, accept);
+        }
+      }
+      else
+      {
+        if (aux > 0)
+        {
+          accept += exchangeBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw);
+        }
+        else
+        {
+          accept += accelExchange(neigh, blocks, pathMx, sdMx, z, beta, pr_beta, accept);
         }
       }
 
       // adaptive MCMC algorithm of Garthwaite, Fan & Sisson (2010)
-      if (adaptGFS && accept > 1)
+      if (adaptGFS && accept > 10)
       {
         if (accept > acc_old)
         {
-          bw = bw + bw/adaptTarget/(it-aux);
+          bw = bw + bw/adaptTarget/it;
         }
         else
         {
-          bw = bw - bw/(1-adaptTarget)/(it-aux);
+          bw = bw - bw/(1-adaptTarget)/it;
         }
         acc_old = accept;
       }

@@ -1,6 +1,23 @@
-# bayesImageS 0.4-1
+# bayesImageS 0.5-0
 
-## Changes
+## New features
+
+* improvements to Bayesian indirect likelihood (BIL) algorithm (`mh$alg="aux"`):
+    + MH hyperparameter `Ecrit` for 2nd order phase transition when k > 4
+    + MH hyperparameter `factor` to inflate the variance of the surrogate model
+    + separate MH hyperparameters `Vmax1`,`Vmax2` for $\beta < \beta_{crit}$ and $\beta > \beta_{crit}$, respectively
+
+* option `mh$sort` to impose an ordering constraint on the component means
+
+## Bug fixes
+
+* removed OpenMP options from `Makevars` to fix problems with RcppArmadillo. Users should edit `~/.R/Makevars` to enabel multithreading.
+
+* no longer wait for `mh$auxiliary` iterations before beginning to update $\beta$ using the exchange algorithm or ABC. For $\beta > \beta_{crit}$, this increased the propensity of the Gibbs sampler to become stuck in a suboptimal local mode, far from the true parameter value.
+
+* added `jss.bst` and `jss.cls` to `.Rbuildignore`
+
+# bayesImageS 0.4-1
 
 * removed the deprecated `slices` parameter from `mcmcPotts()`
 

@@ -76,22 +76,22 @@ Image segmentation using ABC-SMC:
 
 ``` r
 res.smc <- smcPotts(y, neigh, blocks, priors=priors)
-#> Initialization took 6sec
+#> Initialization took 7sec
 #> Iteration 1
 #> previous epsilon 7 and ESS 10000 (target: 9500)
 #> Took 0sec to update epsilon=2.625 (ESS=9505.29)
 #> Took 7sec for 8918 RWMH updates (bw=0.497509)
-#> Took 0sec for 10000 iterations to calculate S(z)=7
+#> Took 1sec for 10000 iterations to calculate S(z)=7
 #> Iteration 2
 #> previous epsilon 2.625 and ESS 9505.29 (target: 9030.02)
-#> Took 8sec to update epsilon=1 (ESS=7970.86)
+#> Took 10sec to update epsilon=1 (ESS=7970.86)
 #> Took 6sec for 7671 RWMH updates (bw=0.466951)
 #> Took 1sec for 10000 iterations to calculate S(z)=6
 #> Iteration 3
 #> previous epsilon 1 and ESS 7970.86 (target: 7572.32)
-#> Took 7sec to update epsilon=4.66632e-302 (ESS=7949.67)
-#> Took 6sec for 7968 RWMH updates (bw=0.466673)
-#> Took 1sec for 10000 iterations to calculate S(z)=7
+#> Took 10sec to update epsilon=4.66632e-302 (ESS=7949.67)
+#> Took 7sec for 7968 RWMH updates (bw=0.466673)
+#> Took 0sec for 10000 iterations to calculate S(z)=7
 # pixel classifications
 pred <- res.smc$alloc/rowSums(res.smc$alloc)
 predMx <- as.raster(array(pred, dim=c(nrow(mask),ncol(mask),3)))
