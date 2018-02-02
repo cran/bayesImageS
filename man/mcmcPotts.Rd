@@ -30,6 +30,3 @@ A matrix containing MCMC samples for the parameters of the Potts model.
 \description{
 Fit the hidden Potts model using a Markov chain Monte Carlo algorithm.
 }
-\seealso{
-\code{\link[mritc]{mritc.bayes}}
-}

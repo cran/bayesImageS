@@ -38,6 +38,3 @@ res.Gibbs <- mcmcPottsNoData(0.7, 3, neigh, blocks, niter=200)
 res.Gibbs$z
 res.Gibbs$sum[200]
 }
-\seealso{
-\code{\link[PottsUtils]{BlocksGibbs}}
-}

@@ -44,7 +44,4 @@ Wilkinson, D. J. (2005)
     \cite{Handbook of Parallel Computing and Statistics}, pp. 481-512
     \emph{Marcel Dekker/CRC Press}
 }
-\seealso{
-\code{\link[PottsUtils]{getBlocks}}
-}
 \keyword{spatial}

@@ -3,7 +3,7 @@ bayesImageS
 ===========
 
 <!--- README.md is generated from README.Rmd. Please edit that file -->
-[![cran version](http://www.r-pkg.org/badges/version/bayesImageS)](https://cran.r-project.org/package=bayesImageS) [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/bayesImageS)](https://github.com/metacran/cranlogs.app) [![rpackages.io rank](http://www.rpackages.io/badge/bayesImageS.svg)](http://www.rpackages.io/package/bayesImageS)
+[![cran version](http://www.r-pkg.org/badges/version/bayesImageS)](https://cran.r-project.org/package=bayesImageS) [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/bayesImageS)](https://github.com/metacran/cranlogs.app)
 
 `bayesImageS` implements algorithms for segmentation of 2D and 3D images, such as computed tomography (CT) and satellite remote sensing. This R package provides functions for Bayesian image analysis using a hidden Potts/Ising model with external field prior. Latent labels are updated using chequerboard Gibbs sampling or Swendsen-Wang. Algorithms for the smoothing parameter include:
 
@@ -11,7 +11,7 @@ bayesImageS
 -   path sampling (thermodynamic integration)
 -   approximate exchange algorithm (AEA)
 -   approximate Bayesian computation (ABC-MCMC and ABC-SMC)
--   Bayesian indirect likelihood (BIL)
+-   Bayesian indirect likelihood (BIL), including the parametric functional approximate Bayesian (PFAB) algorithm
 
 Installation Instructions
 =========================
@@ -76,22 +76,22 @@ Image segmentation using ABC-SMC:
 
 ``` r
 res.smc <- smcPotts(y, neigh, blocks, priors=priors)
-#> Initialization took 7sec
+#> Initialization took 6sec
 #> Iteration 1
 #> previous epsilon 7 and ESS 10000 (target: 9500)
-#> Took 0sec to update epsilon=2.625 (ESS=9505.29)
-#> Took 7sec for 8918 RWMH updates (bw=0.497509)
+#> Took 1sec to update epsilon=2.625 (ESS=9505.29)
+#> Took 5sec for 8918 RWMH updates (bw=0.497509)
 #> Took 1sec for 10000 iterations to calculate S(z)=7
 #> Iteration 2
 #> previous epsilon 2.625 and ESS 9505.29 (target: 9030.02)
-#> Took 10sec to update epsilon=1 (ESS=7970.86)
+#> Took 9sec to update epsilon=1 (ESS=7970.86)
 #> Took 6sec for 7671 RWMH updates (bw=0.466951)
 #> Took 1sec for 10000 iterations to calculate S(z)=6
 #> Iteration 3
 #> previous epsilon 1 and ESS 7970.86 (target: 7572.32)
-#> Took 10sec to update epsilon=4.66632e-302 (ESS=7949.67)
-#> Took 7sec for 7968 RWMH updates (bw=0.466673)
-#> Took 0sec for 10000 iterations to calculate S(z)=7
+#> Took 9sec to update epsilon=4.66632e-302 (ESS=7949.67)
+#> Took 6sec for 7968 RWMH updates (bw=0.466673)
+#> Took 1sec for 10000 iterations to calculate S(z)=7
 # pixel classifications
 pred <- res.smc$alloc/rowSums(res.smc$alloc)
 predMx <- as.raster(array(pred, dim=c(nrow(mask),ncol(mask),3)))

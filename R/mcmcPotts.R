@@ -9,7 +9,6 @@
 #' @param nburn The number of iterations to discard as burn-in.
 #' @param truth A matrix containing the ground truth for the pixel labels.
 #' @return A matrix containing MCMC samples for the parameters of the Potts model.
-#' @seealso \code{\link[mritc]{mritc.bayes}}
 mcmcPotts <- function(y, neighbors, blocks, priors, mh, niter=55000, nburn=5000, truth=NULL) {
   result <- .Call( "mcmcPotts", y, neighbors, blocks, niter, nburn, priors, mh, truth, PACKAGE = "bayesImageS")
 }
@@ -28,7 +27,6 @@ mcmcPotts <- function(y, neighbors, blocks, priors, mh, niter=55000, nburn=5000,
 #'   \item{\code{z}}{An \code{(n+1)} by k matrix containing the final sample from the Potts model after niter iterations of chequerboard Gibbs.}
 #'   \item{\code{sum}}{An \code{niter} by 1 matrix containing the sum of like neighbors, i.e. the sufficient statistic of the Potts model, at each iteration.}
 #'   }
-#' @seealso \code{\link[PottsUtils]{BlocksGibbs}}
 #' @examples
 #' # Swendsen-Wang for a 2x2 lattice
 #' neigh <- matrix(c(5,2,5,3,  1,5,5,4,  5,4,1,5,  3,5,2,5), nrow=4, ncol=4, byrow=TRUE)
@@ -59,7 +57,6 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE)
 #'   \item{\code{z}}{An \code{(n+1)} by k matrix containing the final sample from the Potts model after niter iterations of Swendsen-Wang.}
 #'   \item{\code{sum}}{An \code{niter} by 1 matrix containing the sum of like neighbors, i.e. the sufficient statistic of the Potts model, at each iteration.}
 #'   }
-#' @seealso \code{\link[PottsUtils]{SW}}
 #' @references Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{https://doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
 #' @examples
 #' # Swendsen-Wang for a 2x2 lattice

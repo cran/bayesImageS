@@ -40,7 +40,6 @@ getBlocksCube <- function(mask, nblock){
 #'
 #' @return A list with the number of components equal to \code{nblock}. Each component consists of vertices within the same block.
 #' @details The vertices within each block are mutually independent given the vertices in other blocks. Some blocks could be empty.
-#' @seealso \code{\link[PottsUtils]{getBlocks}}
 #' @references
 #'     Wilkinson, D. J. (2005)
 #'     "Parallel Bayesian Computation"

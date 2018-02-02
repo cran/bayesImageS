@@ -1,7 +1,7 @@
 citHeader("To cite bayesImageS in publications use:")
 
 citEntry(entry = "Article",
-         title        = "Scalable Bayesian Inference for the Inverse Temperature of a Hidden {P}otts Model",
+         title        = "Scalable {B}ayesian Inference for the Inverse Temperature of a Hidden {P}otts Model",
          author       = personList(person(c("Matthew","T."),"Moores"),
                                    person(c("Anthony","N."),"Pettitt"),
                                    as.person("Kerrie Mengersen")),

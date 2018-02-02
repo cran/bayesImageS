@@ -15,7 +15,6 @@
 #' @details There could be more than one way to define the same 3D neighbourhood
 #' structure for a graph (see Example 4 for illustration). 
 #' @keywords spatial
-#' @seealso \code{\link[PottsUtils]{getEdges}}
 #' @references 
 #'  Winkler, G. (2003)
 #'  "Image Analysis, Random Fields and Markov Chain Monte Carlo Methods: A Mathematical Introduction" (2nd ed.)

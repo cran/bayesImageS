@@ -217,7 +217,6 @@ getNeighborsCube <- function(mask, neiStruc){
 #' @details   There could be more than one way to define the same 3D neighbourhood
 #' structure for a graph (see Example 3 for illustration). 
 #' @keywords spatial
-#' @seealso \code{\link[PottsUtils]{getNeighbors}}
 #' @references 
 #'  Winkler, G. (2003)
 #'  "Image Analysis, Random Fields and Markov Chain Monte Carlo Methods: A Mathematical Introduction" (2nd ed.)

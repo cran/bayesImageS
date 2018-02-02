@@ -1,3 +1,7 @@
+# bayesImageS 0.5-1
+
+**in development**
+
 # bayesImageS 0.5-0
 
 ## New features

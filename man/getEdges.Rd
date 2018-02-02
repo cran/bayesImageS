@@ -77,7 +77,4 @@ Winkler, G. (2003)
  "Bayesian Hidden Markov Normal Mixture Models with Application to MRI Tissue Classification"
  \emph{Ph. D. Dissertation, The University of Iowa}
 }
-\seealso{
-\code{\link[PottsUtils]{getEdges}}
-}
 \keyword{spatial}
