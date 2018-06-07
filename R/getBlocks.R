@@ -39,6 +39,7 @@ getBlocksCube <- function(mask, nblock){
 #' @param nblock a scalar specifying the number of blocks. For a 2D graph \code{nblock} could be either 2 or 4, and for a 3D graph \code{nblock} could be either 2 or 8.
 #'
 #' @return A list with the number of components equal to \code{nblock}. Each component consists of vertices within the same block.
+#' @export
 #' @details The vertices within each block are mutually independent given the vertices in other blocks. Some blocks could be empty.
 #' @references
 #'     Wilkinson, D. J. (2005)

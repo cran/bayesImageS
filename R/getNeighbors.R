@@ -214,6 +214,7 @@ getNeighborsCube <- function(mask, neiStruc){
 #' the 2-3 perspective. For each perspective, the neighbours are arranged
 #' in the same way as in a 2D graph.
 #'
+#' @export
 #' @details   There could be more than one way to define the same 3D neighbourhood
 #' structure for a graph (see Example 3 for illustration). 
 #' @keywords spatial
