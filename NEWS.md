@@ -1,3 +1,8 @@
+# bayesImageS 0.5-3
+
+* modified vignette swNoData to only use PottsUtils conditionally
+* deleted vignette PFAB due to problems with Stan and Boost on `gannet/ripley/tests-ATLAS`
+
 # bayesImageS 0.5-2
 
 * changed maintainer email address due to new academic affiliation

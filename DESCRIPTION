@@ -1,8 +1,8 @@
 Package: bayesImageS
 Type: Package
 Title: Bayesian Methods for Image Segmentation using a Potts Model
-Version: 0.5-2
-Date: 2018-06-04
+Version: 0.5-3
+Date: 2018-08-29
 Authors@R: c(
     person("Matt", "Moores", role = c("aut", "cre"), email = "mmoores@gmail.com", comment = c(ORCID = "0000-0003-4531-3572")),
     person("Kerrie", "Mengersen", role=c("aut", "ths"), email="k.mengersen@qut.edu.au", comment = c(ORCID = "0000-0001-8625-9168")),
@@ -23,15 +23,14 @@ BugReports: https://bitbucket.org/Azeari/bayesimages/issues
 Depends: R (>= 3.0.0)
 Imports: Rcpp (>= 0.10.6)
 LinkingTo: Rcpp, RcppArmadillo
-Suggests: mcmcse, coda, PottsUtils, knitr, rmarkdown, rstan, bayess,
-        lattice
+Suggests: mcmcse, coda, PottsUtils, knitr, rmarkdown, rstan, lattice
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 NeedsCompilation: yes
-Packaged: 2018-06-06 15:27:59 UTC; matt
+Packaged: 2018-08-30 01:39:34 UTC; mmoores
 Author: Matt Moores [aut, cre] (<https://orcid.org/0000-0003-4531-3572>),
   Kerrie Mengersen [aut, ths] (<https://orcid.org/0000-0001-8625-9168>),
   Dai Feng [ctb]
 Maintainer: Matt Moores <mmoores@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-06-07 13:50:59 UTC
+Date/Publication: 2018-08-30 05:35:00 UTC

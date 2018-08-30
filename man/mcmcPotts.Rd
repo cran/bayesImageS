@@ -4,8 +4,8 @@
 \alias{mcmcPotts}
 \title{Fit the hidden Potts model using a Markov chain Monte Carlo algorithm.}
 \usage{
-mcmcPotts(y, neighbors, blocks, priors, mh, niter = 55000, nburn = 5000,
-  truth = NULL)
+mcmcPotts(y, neighbors, blocks, priors, mh, niter = 55000,
+  nburn = 5000, truth = NULL)
 }
 \arguments{
 \item{y}{A vector of observed pixel data.}

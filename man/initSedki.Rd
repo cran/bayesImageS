@@ -4,7 +4,8 @@
 \alias{initSedki}
 \title{Initialize the ABC algorithm using the method of Sedki et al. (2013)}
 \usage{
-initSedki(y, neighbors, blocks, param = list(npart = 10000), priors = NULL)
+initSedki(y, neighbors, blocks, param = list(npart = 10000),
+  priors = NULL)
 }
 \arguments{
 \item{y}{A vector of observed pixel data.}

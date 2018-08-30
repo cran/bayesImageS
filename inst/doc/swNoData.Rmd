@@ -46,7 +46,6 @@ where $i \sim \ell \in \mathscr{N}$ are all of the pairs of neighbours in the la
 
 ```{r}
 library(bayesImageS)
-library(PottsUtils)
 
 mask <- matrix(1,50,50)
 neigh <- getNeighbors(mask, c(2,2,0,0))
@@ -59,13 +58,17 @@ bcrit <- log(1 + sqrt(k))
 maxSS <- nrow(edges)
 
 for (i in 1:length(beta)) {
-  # PottsUtils
-  tm <- system.time(result <- SW(iter,n,k,edges,beta=beta[i]))
-  tmMx.PU[i,"user"] <- tm["user.self"]
-  tmMx.PU[i,"elapsed"] <- tm["elapsed"]
-  res <- sufficientStat(result, neigh, block, k)
-  samp.PU[i,] <- res$sum[(burn+1):iter]
-  print(paste("PottsUtils::SW",beta[i],tm["elapsed"],median(samp.PU[i,])))
+  if (requireNamespace("PottsUtils", quietly = TRUE)) {
+    tm <- system.time(result <- PottsUtils::SW(iter,n,k,edges,beta=beta[i]))
+    tmMx.PU[i,"user"] <- tm["user.self"]
+    tmMx.PU[i,"elapsed"] <- tm["elapsed"]
+    res <- sufficientStat(result, neigh, block, k)
+    samp.PU[i,] <- res$sum[(burn+1):iter]
+    print(paste("PottsUtils::SW",beta[i],tm["elapsed"],median(samp.PU[i,])))
+   } else {
+      print("PottsUtils::SW unavailable on this platform.")
+   }
+
   
   # bayesImageS
   tm <- system.time(result <- swNoData(beta[i],k,neigh,block,iter))
@@ -86,14 +89,15 @@ boxplot(tmMx.PU[,"elapsed"],tmMx.bIS[,"elapsed"],ylab="seconds elapsed",names=c(
 On average, `swNoData` using **RcppArmadillo** [@Eddelbuettel2013] is seven times faster than `SW`.
 
 ```{r}
-library(lattice)
 s_z <- c(samp.PU,samp.bIS)
 s_x <- rep(beta,times=iter-burn)
 s_a <- rep(1:2,each=length(beta)*(iter-burn))
 s.frame <- data.frame(s_z,c(s_x,s_x),s_a)
 names(s.frame) <- c("stat","beta","alg")
 s.frame$alg <- factor(s_a,labels=c("SW","swNoData"))
-xyplot(stat ~ beta | alg, data=s.frame)
+  if (requireNamespace("lattice", quietly = TRUE)) {
+    lattice::xyplot(stat ~ beta | alg, data=s.frame)
+  }
 plot(c(s_x,s_x),s_z,pch=s_a,xlab=expression(beta),ylab=expression(S(z)))
 abline(v=bcrit,col="red")
 ```
@@ -105,9 +109,11 @@ rowMeans(samp.bIS) - rowMeans(samp.PU)
 apply(samp.PU, 1, sd)
 apply(samp.bIS, 1, sd)
 s.frame$beta <- factor(c(s_x,s_x))
-s.fit <- aov(stat ~ alg + beta, data=s.frame)
-summary(s.fit)
-TukeyHSD(s.fit,which="alg")
+  if (requireNamespace("PottsUtils", quietly = TRUE)) {
+    s.fit <- aov(stat ~ alg + beta, data=s.frame)
+    summary(s.fit)
+    TukeyHSD(s.fit,which="alg")
+  }
 ```
 
 ### References
