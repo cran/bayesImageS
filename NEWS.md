@@ -1,3 +1,9 @@
+# bayesImageS 0.6-0
+
+* updated citation info for Bayesian Analysis (2018) paper
+* added a hex logo to the README
+* removed duplicate vignette entry
+
 # bayesImageS 0.5-3
 
 * modified vignette swNoData to only use PottsUtils conditionally

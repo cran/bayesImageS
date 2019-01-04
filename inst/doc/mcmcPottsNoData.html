@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matt Moores" />
 
-<meta name="date" content="2018-08-30" />
+<meta name="date" content="2019-01-04" />
 
 <title>mcmcPottsNoData</title>
 
@@ -278,7 +278,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">mcmcPottsNoData</h1>
 <h4 class="author"><em>Matt Moores</em></h4>
-<h4 class="date"><em>2018-08-30</em></h4>
+<h4 class="date"><em>2019-01-04</em></h4>
 
 
 
@@ -369,7 +369,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb33-5" data-line-number="5">edges &lt;-<span class="st"> </span><span class="kw">getEdges</span>(mask, <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>))</a>
 <a class="sourceLine" id="cb33-6" data-line-number="6"><span class="kw">system.time</span>(res2.Gibbs &lt;-<span class="st"> </span><span class="kw">mcmcPottsNoData</span>(<span class="dt">beta=</span><span class="dv">0</span>, <span class="dt">k=</span><span class="dv">3</span>, neigh, block, <span class="dt">niter=</span><span class="dv">100</span>, <span class="dt">random=</span><span class="ot">FALSE</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.254   0.004   0.069</code></pre>
+##   1.012   0.029   0.466</code></pre>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">ts.plot</span>(res2.Gibbs<span class="op">$</span>sum, <span class="dt">ylim=</span><span class="kw">range</span>(<span class="kw">c</span>(res2.Gibbs<span class="op">$</span>sum, <span class="kw">nrow</span>(edges))))</a>
 <a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">abline</span>(<span class="dt">h=</span><span class="kw">nrow</span>(edges), <span class="dt">col=</span><span class="dv">2</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw">abline</span>(<span class="dt">h=</span><span class="kw">nrow</span>(edges)<span class="op">/</span><span class="dv">3</span>, <span class="dt">col=</span><span class="dv">4</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a></code></pre></div>
@@ -391,7 +391,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Now for Swendsen-Wang:</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">system.time</span>(res2.SW &lt;-<span class="st"> </span><span class="kw">swNoData</span>(<span class="dt">beta=</span><span class="dv">0</span>, <span class="dt">k=</span><span class="dv">3</span>, neigh, block, <span class="dt">niter=</span><span class="dv">100</span>, <span class="dt">random=</span><span class="ot">FALSE</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.585   0.044   0.197</code></pre>
+##   0.919   0.081   0.515</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">ts.plot</span>(res2.SW<span class="op">$</span>sum, <span class="dt">ylim=</span><span class="kw">range</span>(<span class="kw">c</span>(res2.SW<span class="op">$</span>sum, <span class="kw">nrow</span>(edges))))</a>
 <a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">abline</span>(<span class="dt">h=</span><span class="kw">nrow</span>(edges), <span class="dt">col=</span><span class="dv">2</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb43-3" data-line-number="3"><span class="kw">abline</span>(<span class="dt">h=</span><span class="kw">nrow</span>(edges)<span class="op">/</span><span class="dv">3</span>, <span class="dt">col=</span><span class="dv">4</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a></code></pre></div>

@@ -3,17 +3,18 @@ citHeader("To cite bayesImageS in publications use:")
 citEntry(entry = "Article",
          title        = "Scalable {B}ayesian Inference for the Inverse Temperature of a Hidden {P}otts Model",
          author       = personList(person(c("Matthew","T."),"Moores"),
+                                   person(c("Geoff","K."),"Nicholls"),
                                    person(c("Anthony","N."),"Pettitt"),
                                    as.person("Kerrie Mengersen")),
-         journal      = "arXiv preprint",
-         year         = "2015",
-         url          = "http://arxiv.org/abs/1503.08066",
+         journal      = "Bayesian Analysis",
+         year         = "2018",
+         doi          = "10.1214/18-BA1130",
          
          textVersion  =
-           paste("Matthew T. Moores, Anthony N. Pettitt & Kerrie Mengersen (2015).",
+           paste("Moores MT, Nicholls GK, Pettitt AN & Mengersen K (2018).",
                  "Scalable Bayesian Inference for the Inverse Temperature of a Hidden Potts Model.",
-                 "arXiv preprint arXiv:1503.08066 [stat.CO]",
-                 "URL http://arxiv.org/abs/1503.08066")
+                 "Bayesian Analysis, in press.",
+                 "DOI 10.1214/18-BA1130")
 )
 
 citEntry(entry = "Article",
