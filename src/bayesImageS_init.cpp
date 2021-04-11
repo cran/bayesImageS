@@ -9,6 +9,7 @@ static const R_CallMethodDef callEntries[]  = {
   {"swNoData", (DL_FUNC) &swNoData, 6},
   {"gibbsGMM", (DL_FUNC) &gibbsGMM, 4},
   {"gibbsNorm", (DL_FUNC) &gibbsNorm, 3},
+  {"gibbsPotts", (DL_FUNC) &mcmcPotts, 9},
   {"sufficientStat", (DL_FUNC) &sufficientStat, 4},
   {"smcPotts", (DL_FUNC) &smcPotts, 5},
   {"initSedki", (DL_FUNC) &initSedki, 5},

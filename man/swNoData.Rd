@@ -42,5 +42,5 @@ res.sw$z
 res.sw$sum[200]
 }
 \references{
-Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{https://doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
+Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \doi{10.1103/PhysRevLett.58.86}
 }

@@ -4,8 +4,13 @@
 \alias{smcPotts}
 \title{Fit the hidden Potts model using approximate Bayesian computation with sequential Monte Carlo (ABC-SMC).}
 \usage{
-smcPotts(y, neighbors, blocks, param = list(npart = 10000, nstat = 50),
-  priors = NULL)
+smcPotts(
+  y,
+  neighbors,
+  blocks,
+  param = list(npart = 10000, nstat = 50),
+  priors = NULL
+)
 }
 \arguments{
 \item{y}{A vector of observed pixel data.}

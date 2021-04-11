@@ -4,7 +4,9 @@
 \name{res}
 \alias{res}
 \title{Simulation from the Potts model using single-site Gibbs updates.}
-\format{A \code{list} containing 7 variables.}
+\format{
+A \code{list} containing 7 variables.
+}
 \usage{
 res
 }

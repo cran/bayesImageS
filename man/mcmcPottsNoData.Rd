@@ -4,8 +4,7 @@
 \alias{mcmcPottsNoData}
 \title{Simulate pixel labels using chequerboard Gibbs sampling.}
 \usage{
-mcmcPottsNoData(beta, k, neighbors, blocks, niter = 1000,
-  random = TRUE)
+mcmcPottsNoData(beta, k, neighbors, blocks, niter = 1000, random = TRUE)
 }
 \arguments{
 \item{beta}{The inverse temperature parameter of the Potts model.}

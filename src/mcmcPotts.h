@@ -13,6 +13,8 @@ RcppExport SEXP gibbsGMM(SEXP y, SEXP niter, SEXP nburn, SEXP priors);
 
 RcppExport SEXP gibbsNorm(SEXP y, SEXP niter, SEXP priors);
 
+RcppExport SEXP gibbsPotts(SEXP y, SEXP z, SEXP beta, SEXP mu, SEXP sd, SEXP neighbors, SEXP blocks, SEXP priors, SEXP niter);
+  
 RcppExport SEXP relabel(SEXP y, SEXP neighbors, SEXP blocks, SEXP samples, SEXP truth);
 
 RcppExport SEXP sufficientStat(SEXP zMx, SEXP neighbors, SEXP blocks, SEXP k);

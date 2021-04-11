@@ -27,5 +27,5 @@ Test the residual resampling algorithm.
 }
 \references{
 Liu, J. S. & Chen, R. (1998) "Sequential Monte Carlo Methods for Dynamic Systems"
- \emph{J. Am. Stat. Assoc.} \bold{93}(443): 1032--1044, DOI: \href{https://doi.org/10.1080/01621459.1998.10473765}{10.1080/01621459.1998.10473765}
+ \emph{J. Am. Stat. Assoc.} \bold{93}(443): 1032--1044, DOI: \doi{10.1080/01621459.1998.10473765}
 }

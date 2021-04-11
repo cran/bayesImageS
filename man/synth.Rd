@@ -4,14 +4,16 @@
 \name{synth}
 \alias{synth}
 \title{Simulation from the Potts model using Swendsen-Wang.}
-\format{A \code{list} containing 5 variables:
+\format{
+A \code{list} containing 5 variables:
 \describe{
   \item{0.22}{simulations for \eqn{\beta = 0.22}}
   \item{0.44}{simulations for \eqn{\beta = 0.44}}
   \item{0.88}{simulations for \eqn{\beta = 0.88}}
   \item{1.32}{simulations for \eqn{\beta = 1.32}}
   \item{tm}{time taken by the simulations}
-}}
+}
+}
 \usage{
 synth
 }

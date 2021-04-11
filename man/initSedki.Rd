@@ -4,8 +4,7 @@
 \alias{initSedki}
 \title{Initialize the ABC algorithm using the method of Sedki et al. (2013)}
 \usage{
-initSedki(y, neighbors, blocks, param = list(npart = 10000),
-  priors = NULL)
+initSedki(y, neighbors, blocks, param = list(npart = 10000), priors = NULL)
 }
 \arguments{
 \item{y}{A vector of observed pixel data.}
@@ -25,5 +24,5 @@ A matrix containing SMC samples for the parameters of the Potts model.
 Initialize the ABC algorithm using the method of Sedki et al. (2013)
 }
 \references{
-Sedki, M.; Pudlo, P.; Marin, J.-M.; Robert, C. P. & Cornuet, J.-M. (2013) "Efficient learning in ABC algorithms" \href{http://arxiv.org/abs/1210.1388}{arXiv:1210.1388}
+Sedki, M.; Pudlo, P.; Marin, J.-M.; Robert, C. P. & Cornuet, J.-M. (2013) "Efficient learning in ABC algorithms" \href{https://arxiv.org/abs/1210.1388}{arXiv:1210.1388}
 }

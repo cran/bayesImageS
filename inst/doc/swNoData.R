@@ -1,15 +1,15 @@
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 beta <- seq(0,2,by=0.1)
 tmMx.PU <- tmMx.bIS <- matrix(nrow=length(beta),ncol=2)
 rownames(tmMx.PU) <- rownames(tmMx.bIS) <- beta
 colnames(tmMx.PU) <- colnames(tmMx.bIS) <- c("user","elapsed")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 iter <- 600
 burn <- 100
 samp.PU <- samp.bIS <- matrix(nrow=length(beta),ncol=iter-burn)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(bayesImageS)
 
 mask <- matrix(1,50,50)
@@ -43,12 +43,12 @@ for (i in 1:length(beta)) {
   print(paste("bayesImageS::swNoData",beta[i],tm["elapsed"],median(samp.bIS[i,])))
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 summary(tmMx.PU)
 summary(tmMx.bIS)
 boxplot(tmMx.PU[,"elapsed"],tmMx.bIS[,"elapsed"],ylab="seconds elapsed",names=c("SW","swNoData"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 s_z <- c(samp.PU,samp.bIS)
 s_x <- rep(beta,times=iter-burn)
 s_a <- rep(1:2,each=length(beta)*(iter-burn))
@@ -61,7 +61,7 @@ s.frame$alg <- factor(s_a,labels=c("SW","swNoData"))
 plot(c(s_x,s_x),s_z,pch=s_a,xlab=expression(beta),ylab=expression(S(z)))
 abline(v=bcrit,col="red")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 rowMeans(samp.bIS) - rowMeans(samp.PU)
 apply(samp.PU, 1, sd)
 apply(samp.bIS, 1, sd)

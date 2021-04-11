@@ -1,19 +1,65 @@
 citHeader("To cite bayesImageS in publications use:")
 
+citEntry(entry = "Manual",
+         title        = "{bayesImageS}: {B}ayesian Methods for Image Segmentation using a {P}otts Model",
+         author       = personList(person(c("Matthew","T."),"Moores"),
+                                   person("Dai", "Feng"),
+                                   person("Kerrie", "Mengersen")),
+         year         = "2021",
+         doi          = "10.4225/09/584e37ae2a6b9",
+         url          = "https://CRAN.R-project.org/package=bayesImageS",
+
+         textVersion  =
+           paste("Moores MT, Feng D & Mengersen K (2021).",
+                 "bayesImageS: Bayesian Methods for Image Segmentation using a Potts Model.",
+                 "R package version 0.6-1",
+                 "URL: https://CRAN.R-project.org/package=bayesImageS")
+)
+
+citEntry(entry = "InCollection",
+         title        = "Bayesian Computation with Intractable Likelihoods",
+         author       = personList(person(c("Matthew","T."),"Moores"),
+                                   person(c("Anthony","N."),"Pettitt"),
+                                   as.person("Kerrie Mengersen")),
+         booktitle    = "Case Studies in Applied Bayesian Data Science",
+         year         = "2020",
+         chapter      = 6,
+         doi          = "10.1007/978-3-030-42553-1_6",
+         editor       = personList(person(c("Kerrie","L."),"Mengersen"),
+                                   person("Pierre","Pudlo"),
+                                   person(c("Christian","P."),"Robert")),
+         pages        = "137--151",
+         publisher    = "Springer",
+         
+         textVersion  =
+           paste("Moores MT, Pettitt AN & Mengersen K (2020).",
+                 "Bayesian Computation with Intractable Likelihoods.",
+                 "In Mengersen KL, Pudlo P, Robert CP (eds.),",
+                 "Case Studies in Applied Bayesian Data Science,",
+                 "ch. 6, pp. 137-151.",
+                 "DOI 10.1007/978-3-030-42553-1_6")
+)
+         
+
+
 citEntry(entry = "Article",
+         header = "The parametric functional approximate Bayesian (PFAB) algorithm was introduced in:",
          title        = "Scalable {B}ayesian Inference for the Inverse Temperature of a Hidden {P}otts Model",
          author       = personList(person(c("Matthew","T."),"Moores"),
                                    person(c("Geoff","K."),"Nicholls"),
                                    person(c("Anthony","N."),"Pettitt"),
                                    as.person("Kerrie Mengersen")),
          journal      = "Bayesian Analysis",
-         year         = "2018",
+         year         = "2020",
+  volume       = "15",
+  number       = "1",
+  pages        = "1--27",
          doi          = "10.1214/18-BA1130",
          
          textVersion  =
-           paste("Moores MT, Nicholls GK, Pettitt AN & Mengersen K (2018).",
+           paste("Moores MT, Nicholls GK, Pettitt AN & Mengersen K (2020).",
                  "Scalable Bayesian Inference for the Inverse Temperature of a Hidden Potts Model.",
-                 "Bayesian Analysis, in press.",
+                 "Bayesian Analysis 15(1): 1-27.",
                  "DOI 10.1214/18-BA1130")
 )
 

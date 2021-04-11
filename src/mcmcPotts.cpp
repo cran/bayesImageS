@@ -2,7 +2,7 @@
 // This file is part of the R package bayesImageS. It contains
 // implementations of Metropolis-Hastings algorithms for image
 // segmentation using a hidden Potts model.
-// Copyright (C) 2013-2017  Matthew Moores
+// Copyright (C) 2013-2020  Matthew Moores
 //
 // bayesImageS is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -772,6 +772,83 @@ BEGIN_RCPP
       Rcpp::Named("mu")    = mu_save,  // history of simulated values of mu
       Rcpp::Named("sigma") = sd_save,  // history of simulated values of sigma
       Rcpp::Named("lambda") = wt_save  // history of simulated values of lambda
+  );
+END_RCPP
+}
+
+SEXP gibbsPotts(SEXP yS, SEXP zS, SEXP betaS, SEXP muS, SEXP sdS, SEXP nS, SEXP bS, SEXP prS, SEXP itS) {
+BEGIN_RCPP
+  Rcpp::NumericVector yR(yS), muR(muS), sdR(sdS); // creates Rcpp vector from SEXP
+  Rcpp::IntegerMatrix nR(nS), zR(zS);             // creates Rcpp matrix from SEXP
+  Rcpp::List bR(bS), prR(prS);
+  unsigned niter = Rcpp::as<unsigned>(itS);
+  double beta = Rcpp::as<double>(betaS);
+  
+  Rcpp::NumericVector yunique = Rcpp::unique(yR);
+  Rcpp::IntegerVector ymatchR = Rcpp::match(yR, yunique);
+  // no easy conversion from IntegerVector to uvec
+  arma::uvec ymatch = unsign(ymatchR) - 1;
+  arma::umat neigh = unsignMx(nR) - 1;
+  arma::umat z = unsignMx(zR);
+
+  // block index vectors are not symmetric
+  std::vector<arma::uvec> blocks;
+  blocks.reserve(bR.length());
+  for (int b=0; b<bR.length(); b++)
+  {
+    Rcpp::IntegerVector block = bR[b];
+    arma::uvec ublock = unsign(block - 1);
+    blocks.push_back(ublock);
+  }
+
+  if (prR.length() == 0)
+  {
+    throw std::invalid_argument("prior is empty");
+  }
+  int nvert = nR.nrow();
+  if (nvert != yR.size())
+  {
+    throw std::invalid_argument("mismatch between observations and neighbourhood matrix");
+  }
+  int k = Rcpp::as<int>(prR["k"]);
+  Rcpp::NumericVector prior_mu = prR["mu"];
+  Rcpp::NumericVector prior_mu_sd = prR["mu.sd"];
+  Rcpp::NumericVector prior_sd = prR["sigma"];
+  Rcpp::NumericVector prior_sd_nu = prR["sigma.nu"];
+
+  arma::colvec y(yR.begin(), yR.size(), false); // reuses memory and avoids extra copy
+  arma::rowvec mu(muR.begin(), muR.size(), false);
+  arma::rowvec sd(sdR.begin(), sdR.size(), false);
+  arma::rowvec pr_mu(prior_mu.begin(), prior_mu.size(), false);
+  arma::rowvec pr_mu_sd(prior_mu_sd.begin(), prior_mu_sd.size(), false);
+  arma::rowvec pr_mu_tau = arma::pow(pr_mu_sd, -2);
+  arma::rowvec pr_sd(prior_sd.begin(), prior_sd.size(), false);
+  arma::rowvec pr_sd_nu(prior_sd_nu.begin(), prior_sd_nu.size(), false);
+  arma::rowvec pr_sd_SS = pr_sd_nu % arma::square(pr_sd); // Schur product
+  
+  arma::vec sum_save = arma::zeros(niter);   // sum of identical neighbours
+  arma::umat alloc = arma::zeros<arma::umat>(nR.nrow(), k);
+  arma::rowvec nZ(k), sumY(k), sqDiff(k);
+
+  for (unsigned it=0; it<niter; it++){
+    // update labels
+    arma::mat alpha = dnorm(yunique, ymatch, mu, sd);
+    gibbsLabels(neigh, blocks, z, alloc, beta, alpha);
+    updateStats(y, z, nZ, sumY, sqDiff);
+    sum_save(it) = sum_ident(z, neigh, blocks);
+
+    // update means
+    mu = gibbsMeans(nZ, sumY, pr_mu, pr_mu_tau, sd);
+
+    // update standard deviations
+    sd = gibbsStdDev(nZ, sumY, sqDiff, pr_sd_nu, pr_sd_SS, mu);
+  }
+
+  return Rcpp::List::create(
+    Rcpp::Named("mu")    = mu,       // sample of mu
+    Rcpp::Named("sigma") = sd,       // sample of sigma
+    Rcpp::Named("z")     = z,        // final sample from Gibbs distribution
+    Rcpp::Named("sum") = sum_save    // sum of identical neighbours
   );
 END_RCPP
 }

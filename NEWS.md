@@ -1,6 +1,12 @@
+# bayesImageS 0.6-1
+
+* added citation info for 2020 book chapter
+* new function gibbsPotts for updating mu, sd and z for a fixed value of beta
+* changed URLs from http:// to https://
+
 # bayesImageS 0.6-0
 
-* updated citation info for Bayesian Analysis (2018) paper
+* updated citation info for Bayesian Analysis (2020) paper
 * added a hex logo to the README
 * removed duplicate vignette entry
 

@@ -60,7 +60,7 @@ mcmcPottsNoData <- function(beta, k, neighbors, blocks, niter=1000, random=TRUE)
 #'   \item{\code{sum}}{An \code{niter} by 1 matrix containing the sum of like neighbors, i.e. the sufficient statistic of the Potts model, at each iteration.}
 #'   }
 #' @export
-#' @references Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \href{https://doi.org/10.1103/PhysRevLett.58.86}{10.1103/PhysRevLett.58.86}
+#' @references Swendsen, R. H. & Wang, J.-S. (1987) "Nonuniversal critical dynamics in Monte Carlo simulations" \emph{Physical Review Letters} \bold{58}(2), 86--88, DOI: \doi{10.1103/PhysRevLett.58.86}
 #' @examples
 #' # Swendsen-Wang for a 2x2 lattice
 #' neigh <- matrix(c(5,2,5,3,  1,5,5,4,  5,4,1,5,  3,5,2,5), nrow=4, ncol=4, byrow=TRUE)
@@ -98,6 +98,19 @@ gibbsGMM <- function(y, niter=1000, nburn=500, priors=NULL) {
 #' @export
 gibbsNorm <- function(y, niter=1000, priors=NULL) {
   result <- .Call( "gibbsNorm", y, niter, priors, PACKAGE = "bayesImageS")
+}
+
+#' Fit a hidden Potts model to the observed data, using a fixed value of beta.
+#' 
+#' @inheritParams mcmcPotts
+#' @param labels A matrix of pixel labels. 
+#' @param beta The inverse temperature parameter of the Potts model.
+#' @param mu A vector of means for the mixture components.
+#' @param sd A vector of standard deviations for the mixture components.
+#' @return A matrix containing MCMC samples for the parameters of the Potts model.
+#' @export
+gibbsPotts <- function(y, labels, beta, mu, sd, neighbors, blocks, priors, niter=1) {
+  result <- .Call( "gibbsPotts", y, labels, beta, mu, sd, neighbors, blocks, priors, niter, PACKAGE = "bayesImageS")
 }
 
 #' Calculate the sufficient statistic of the Potts model for the given labels.
