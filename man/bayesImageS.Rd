@@ -2,6 +2,7 @@
 % Please edit documentation in R/bayesImageS.R
 \docType{package}
 \name{bayesImageS}
+\alias{bayesImageS-package}
 \alias{bayesImageS}
 \title{Package bayesImageS}
 \description{
@@ -28,5 +29,6 @@ Feng, D. (2008) "Bayesian Hidden Markov Normal Mixture Models with Application t
 M. T. Moores and K. Mengersen
 with additional code contributed by D. Feng
 
-Maintainer: Matt Moores <mmoores@uow.edu.au>
+Maintainer: Matt Moores <mmoores@gmail.com>
 }
+\keyword{internal}

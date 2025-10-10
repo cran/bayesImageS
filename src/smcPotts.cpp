@@ -131,7 +131,7 @@ double effectiveSampleSize(const arma::vec &log_wt)
   double sum_wt = sum_logs(log_wt);
   double sum_sq = sum_logs(log_wt + log_wt);
   double res = exp(sum_wt + sum_wt - sum_sq);
-  if (arma::is_finite(res)) return res;
+  if (std::isfinite(res)) return res;
   else return 0;
 }
 
@@ -191,7 +191,7 @@ Rcpp::NumericVector subsample(Rcpp::NumericVector &particles, arma::vec &log_wt,
     double total = 0.0;
     for (int j=0; j < particles.size() && total <= randU[i]; j++)
     {
-      if (arma::is_finite(log_wt(j)))
+      if (std::isfinite(log_wt(j)))
       {
         total += exp(log_wt(j));
       }
@@ -214,7 +214,7 @@ Rcpp::IntegerVector resample_resid(Rcpp::NumericVector &particles, arma::vec &lo
   unsigned r=0;
   for (unsigned i=0; i<n; i++)
   {
-    if (arma::is_finite(log_wt(i)))
+    if (std::isfinite(log_wt(i)))
     {
       int tW = (int)trunc(exp(log_wt(i) + log((double)n)));
       for (int j=0; j < tW; j++)
@@ -236,7 +236,7 @@ Rcpp::IntegerVector resample_resid(Rcpp::NumericVector &particles, arma::vec &lo
     double total = 0.0;
     for (unsigned j=0; j < n && total <= randU[i-r]; j++)
     {
-      if (arma::is_finite(log_wt(j)))
+      if (std::isfinite(log_wt(j)))
       {
         total += exp(log_wt(j));
       }
@@ -255,7 +255,7 @@ double weightedMean(const Rcpp::NumericVector &particles, const arma::vec &log_w
   double maxl = log_weights.max();
   for (unsigned i=0; i < log_weights.n_elem; i++)
   {
-    if (arma::is_finite(log_weights[i]))
+    if (std::isfinite(log_weights[i]))
       suml += exp(log_weights(i) - maxl + log(particles[i]));
   }
   return suml * exp(maxl);
@@ -270,7 +270,7 @@ double weightedVariance(const Rcpp::NumericVector &particles, const arma::vec &l
   double maxl = log_weights.max();
   for (unsigned i=0; i < log_weights.n_elem; i++)
   {
-    if (arma::is_finite(log_weights[i]))
+    if (std::isfinite(log_weights[i]))
       suml += exp(log_weights(i) - maxl) * pow(particles[i] - mean, 2.0);
   }
   return suml * exp(maxl);
@@ -288,7 +288,7 @@ unsigned rwmhParticles(Rcpp::NumericVector &particles, const arma::vec &log_wt,
   unsigned acc=0;
   for (int i=0; i<particles.size(); i++)
   {
-    if (arma::is_finite(log_wt(i)))
+    if (std::isfinite(log_wt(i)))
     {
       double prop = rwmh(particles[i], bw, prior);
       Rcpp::NumericVector pS = updatePseudo(prop, pseudo.ncol(), k, neigh, blocks, pathMx, sdMx, aux_sw);

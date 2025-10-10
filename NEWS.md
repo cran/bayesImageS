@@ -1,3 +1,17 @@
+# bayesImageS 0.7-0
+
+## New features
+
+* verbose flag to reduce excessive console output for exchange algorithm
+
+## Bug fixes
+
+* issue BAYES-1 NOTE: CITATION file contains call(s) to old-style functions
+* issue BAYES-2 WARN: 'arma::is_finite<double>' is deprecated
+* issue BAYES-4 roxygen2 requires "Encoding: UTF-8"
+* issue BAYES-5 roxygen2 @docType "package"` is deprecated
+* issue BAYES-6 removed vignette swNoData due to segfault on macos
+
 # bayesImageS 0.6-1
 
 * added citation info for 2020 book chapter
@@ -72,7 +86,6 @@
 ## Bug fixes
 
 * Fixed compile errors on SPARC Solaris
-    + <https://www.r-project.org/nosvn/R.check/r-patched-solaris-x86/bayesImageS-00check.html>
 
 * Fixed compile warnings from icpc (Intel Parallel Studio XE) on Linux
 
@@ -84,5 +97,4 @@
 
 # bayesImageS 0.1-21
 
-* First public release on RunMyCode.org:
-    + <http://www.runmycode.org/companion/view/546>
+* First public release on RunMyCode.org

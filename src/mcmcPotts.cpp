@@ -2,7 +2,7 @@
 // This file is part of the R package bayesImageS. It contains
 // implementations of Metropolis-Hastings algorithms for image
 // segmentation using a hidden Potts model.
-// Copyright (C) 2013-2020  Matthew Moores
+// Copyright (C) 2013-2025  Matthew Moores
 //
 // bayesImageS is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 // Lionel Cucala, J-M Marin, C. P. Robert & D. M. Titterington (2009)
 unsigned exchangeBeta(const arma::umat & neigh, const std::vector<arma::uvec> & blocks,
                       const arma::umat & z, double & beta,
-                      const double prior_beta[2], const unsigned aux, const bool useSW, const bool swapAux, const double bw)
+                      const double prior_beta[2], const unsigned aux, const bool useSW, const bool swapAux, const double bw, const bool verbose)
 {
   // random walk proposal for B' ~ N(B, 0.01^2)
   double bprime = rwmh(beta, bw, prior_beta);
@@ -52,15 +52,15 @@ unsigned exchangeBeta(const arma::umat & neigh, const std::vector<arma::uvec> & 
   double sum_w = sum_ident(w, neigh, blocks);
   double log_ratio = (bprime-beta)*sum_z + (beta-bprime)*sum_w;
 
-  Rcpp::Rcout << exp(log_ratio);
+  if (verbose) Rcpp::Rcout << exp(log_ratio);
   // accept/reject
   if (unif_rand() < exp(log_ratio))
   {
     beta = bprime;
-    Rcpp::Rcout << "\t1\t" << beta << "\n";
+    if (verbose) Rcpp::Rcout << "\t1\t" << beta << "\n";
     return 1;
   }
-  Rcpp::Rcout << "\t0\n";
+  if (verbose) Rcpp::Rcout << "\t0\n";
   return 0;
 }
 
@@ -577,7 +577,11 @@ BEGIN_RCPP
     else
     {
       // slow algorithm, so print progress at each iteration
-      Rcpp::Rcout << it << "of" << niter << "(bw " << bw << ")\t";
+      if ((it < nburn) || (it % 1000 == 0))
+      {
+        Rcpp::Rcout << it << "of" << niter << "(bw " << bw << ")\t";
+      }
+      if (it % 1000 == 0) Rcpp::Rcout << "\n";
       if (pseudo)
       {
         accept += pseudoBeta(neigh, blocks, z, beta, pr_beta, bw);
@@ -598,7 +602,7 @@ BEGIN_RCPP
       {
         if (aux > 0)
         {
-          accept += exchangeBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw);
+          accept += exchangeBeta(neigh, blocks, z, beta, pr_beta, aux, aux_sw, aux_swap, bw, it < nburn);
         }
         else
         {

@@ -11,7 +11,7 @@
 #' M. T. Moores and K. Mengersen
 #' with additional code contributed by D. Feng
 #' 
-#' Maintainer: Matt Moores <mmoores@uow.edu.au>
+#' Maintainer: Matt Moores <mmoores@gmail.com>
 #' 
 #' @references
 #' Moores, M. T.; Nicholls, G. K.; Pettitt, A. N. & Mengersen, K. (2020) "Scalable Bayesian inference for the inverse temperature of a hidden Potts model" \emph{Bayesian Analysis} \bold{15}(1), 1--17, DOI: \doi{10.1214/18-BA1130}
@@ -27,9 +27,9 @@
 #'
 #' @useDynLib bayesImageS
 #' @importFrom Rcpp sourceCpp
-#' @docType package
 #' @name bayesImageS
-NULL
+#' @keywords internal
+"_PACKAGE"
 
 .onUnload <- function (libpath) {
   library.dynam.unload("bayesImageS", libpath)

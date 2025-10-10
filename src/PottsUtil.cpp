@@ -120,7 +120,7 @@ double sum_logs(arma::vec log_prob)
   double maxl = log_prob.max();
   for (unsigned i=0; i < log_prob.n_elem; i++)
   {
-    if (arma::is_finite(log_prob(i)))
+    if (std::isfinite(log_prob(i)))
       suml += exp(log_prob(i) - maxl);
   }
   return log(suml) + maxl;
