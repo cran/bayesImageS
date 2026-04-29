@@ -1,8 +1,8 @@
 Package: bayesImageS
 Type: Package
 Title: Bayesian Methods for Image Segmentation using a Potts Model
-Version: 0.7-0
-Date: 2025-10-10
+Version: 0.7-1
+Date: 2026-04-29
 Encoding: UTF-8
 Authors@R: c(
     person("Matt", "Moores", role = c("aut", "cre", "cph"), email = "mmoores@gmail.com", comment = c(ORCID = "0000-0003-4531-3572")),
@@ -31,7 +31,7 @@ Suggests: mcmcse, coda, PottsUtils, rstan, knitr, rmarkdown, lattice
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
 NeedsCompilation: yes
-Packaged: 2025-10-10 02:06:16 UTC; mmoores
+Packaged: 2026-04-29 00:58:16 UTC; MatthewMoores
 Author: Matt Moores [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0003-4531-3572>),
   Dai Feng [ctb],
@@ -39,4 +39,4 @@ Author: Matt Moores [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0001-8625-9168>)
 Maintainer: Matt Moores <mmoores@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-10-10 08:30:11 UTC
+Date/Publication: 2026-04-29 02:20:02 UTC

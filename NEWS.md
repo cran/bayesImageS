@@ -1,3 +1,8 @@
+# bayesImageS 0.7-1
+
+* removed obsolete Ldflags from Makevars.win
+* updated README
+
 # bayesImageS 0.7-0
 
 ## New features
@@ -10,7 +15,7 @@
 * issue BAYES-2 WARN: 'arma::is_finite<double>' is deprecated
 * issue BAYES-4 roxygen2 requires "Encoding: UTF-8"
 * issue BAYES-5 roxygen2 @docType "package"` is deprecated
-* issue BAYES-6 removed vignette swNoData due to segfault on macos
+* issue BAYES-6 removed vignette swNoData due to segfault on macOS
 
 # bayesImageS 0.6-1
 

@@ -8,7 +8,7 @@ version](https://www.r-pkg.org/badges/version/bayesImageS)](https://cran.r-proje
 [![rstudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/bayesImageS)](https://github.com/r-hub/cranlogs.app)
 
-<img src="inst/image/README-logo.png" width="100px" height="100px" style="display: block; margin: auto 0 auto auto;" />
+<img src="inst/image/README-logo.png" alt="" width="100px" height="100px" style="display: block; margin: auto 0 auto auto;" />
 
 `bayesImageS` implements algorithms for segmentation of 2D and 3D
 images, such as computed tomography (CT) and satellite remote sensing.
@@ -85,22 +85,22 @@ Image segmentation using ABC-SMC:
 
 ``` r
 res.smc <- smcPotts(y, neigh, blocks, priors=priors)
-#> Initialization took 66sec
+#> Initialization took 39sec
 #> Iteration 1
 #> previous epsilon 7 and ESS 10000 (target: 9500)
 #> Took 0sec to update epsilon=2.625 (ESS=9505.29)
-#> Took 58sec for 8918 RWMH updates (bw=0.497509)
+#> Took 49sec for 8918 RWMH updates (bw=0.497509)
 #> Took 4sec for 10000 iterations to calculate S(z)=7
 #> Iteration 2
 #> previous epsilon 2.625 and ESS 9505.29 (target: 9030.02)
-#> Took 7sec to update epsilon=1 (ESS=7970.86)
-#> Took 55sec for 7671 RWMH updates (bw=0.466951)
+#> Took 5sec to update epsilon=1 (ESS=7970.86)
+#> Took 36sec for 7671 RWMH updates (bw=0.466951)
 #> Took 4sec for 10000 iterations to calculate S(z)=6
 #> Iteration 3
 #> previous epsilon 1 and ESS 7970.86 (target: 7572.32)
-#> Took 7sec to update epsilon=4.66632e-302 (ESS=7949.67)
-#> Took 55sec for 7968 RWMH updates (bw=0.466673)
-#> Took 4sec for 10000 iterations to calculate S(z)=7
+#> Took 5sec to update epsilon=4.66632e-302 (ESS=7949.67)
+#> Took 71sec for 7968 RWMH updates (bw=0.466673)
+#> Took 14sec for 10000 iterations to calculate S(z)=7
 # pixel classifications
 pred <- res.smc$alloc/rowSums(res.smc$alloc)
 predMx <- as.raster(array(pred, dim=c(nrow(mask),ncol(mask),3)))
@@ -124,10 +124,11 @@ all.equal(seg, l)
 # filter weights to remove Ninf, NaN
 w <- res.smc$wt
 w[is.na(w)] <- 0
-plot(density(res.smc$beta, weights=w),main=expression(paste("Posterior for ",beta)))
-abline(h=0,lty=3)
-abline(v=beta,lty=2,col=4)
-abline(v=log(1 + sqrt(k)),lty=3,col=2) # critical point
+hist(res.smc$beta, main=expression(paste("Posterior for ",beta)),
+     freq=FALSE, col=3, xlab=expression(beta), breaks=15)
+lines(density(res.smc$beta, weights=w), lwd=3, lty=2, col=4)
+abline(v=log(1 + sqrt(k)),lty=3,col=2,lwd=2) # critical point
+rug(beta, col=4, lwd=3)
 ```
 
 ![](inst/image/README-unnamed-chunk-8-1.png)<!-- -->
@@ -136,7 +137,7 @@ abline(v=log(1 + sqrt(k)),lty=3,col=2) # critical point
 
 library(coda)
 res.res <- testResample(res.smc$beta, w, cbind(res.smc$mu, res.smc$sigma))
-#> Took 1sec to resample 10000 particles
+#> Took 5sec to resample 10000 particles
 res.coda <- mcmc(cbind(res.res$pseudo, res.res$beta))
 varnames(res.coda) <- c(paste("mu",1:k), paste("sd",1:k), "beta")
 HPDinterval(res.coda)
